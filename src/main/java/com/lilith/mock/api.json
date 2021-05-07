@@ -1,4 +1,35 @@
 [
+
+  {
+    "description": "模拟一个没有参数的get请求",
+    "request": {
+      "uri": "/api/member/list",
+      "method": "get"
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8"
+      },
+      "text": "员工列表"
+    }
+  },
+  {
+    "description": "这是一个带参数的get请求",
+    "request": {
+      "uri": "/api/member/user",
+      "method": "get",
+      "queries": {
+        "name": "Stark",
+        "age": "18"
+      }
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=gbk"
+      },
+      "text": "I am IronMan!"
+    }
+  },
   {
     "description":"注册成功接口",
     "request":{
@@ -112,7 +143,6 @@
       },
       "text":"恭喜获得cookies信息成功"
     }
-
   },
   {
     "description":"登陆失败，用户名或密码错误",
