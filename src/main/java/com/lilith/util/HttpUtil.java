@@ -3,6 +3,7 @@ package com.lilith.util;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -55,6 +56,41 @@ public class HttpUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
+    }
+
+    public static String doGet(String url, Map<String,String> params){
+
+        String result = null;
+
+        // 取出map中的参数和value，循环map,然后加入请求体paramesters中
+        Set<String> keys = params.keySet();
+        // 循环map
+        // 定义标识位,通过mark判断是否是第一个参数，第一个参数前面需要加？
+        int mark = 1;
+        for (String key : keys) {
+            String value = params.get(key);
+            if (mark == 1){
+                url += ("?"+ key + "=" + value);
+            } else {
+                url += ("&" + key + "=" + value);
+            }
+            mark ++;
+        }
+
+        // 指定请求方式
+        HttpGet get = new HttpGet(url);
+
+        try {
+            // 发送请求
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpResponse response = httpClient.execute(get);
+            int statusCode = response.getStatusLine().getStatusCode();
+            result = EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return result;
     }
 }
