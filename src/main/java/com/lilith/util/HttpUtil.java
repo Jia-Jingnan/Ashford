@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class HttpUtil {
 
-    public String doPost(String url, Map<String,String> params){
+    public static String doPost(String url, Map<String,String> params){
 
         String result = null;
 
@@ -45,13 +45,13 @@ public class HttpUtil {
             //5.发起请求，获取接口响应信息
             HttpClient client = HttpClients.createDefault();
             HttpResponse response = client.execute(post);
-            System.out.println(response.toString());
+            // System.out.println(response.toString());
             //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
             // 状态码
             int code = response.getStatusLine().getStatusCode();
             // 响应报文
             result = EntityUtils.toString(response.getEntity());
-            System.out.println(result);
+            // System.out.println(result);
         } catch (IOException e) {
             e.printStackTrace();
         }

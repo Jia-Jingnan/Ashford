@@ -1,5 +1,6 @@
 package com.lilith.cases;
 
+import com.lilith.util.HttpUtil;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,7 +13,9 @@ import org.apache.http.util.EntityUtils;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:JiaJingnan
@@ -47,5 +50,14 @@ public class Register {
         // 响应报文
         String result = EntityUtils.toString(response.getEntity());
         System.out.println(result);
+
+        System.out.println("使用HttpUtil中的doPost方法请求register接口");
+        // 使用HttpUtil中的doPost方法请求register接口
+        // 构造参数
+        Map<String,String> params = new HashMap<>();
+        params.put("phone","18268046852");
+        params.put("password","123456");
+        String res = HttpUtil.doPost(url, params);
+        System.out.println(res);
     }
 }
