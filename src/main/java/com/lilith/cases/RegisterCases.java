@@ -1,6 +1,7 @@
 package com.lilith.cases;
 
 import com.lilith.util.HttpUtil;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -28,39 +29,24 @@ public class RegisterCases {
 
     String url = "http://127.0.0.1:8848/api/member/register";
 
-    @Test
-    public void test1(){
+    @Test(dataProvider = "datas")
+    public void testRegister(String phone, String password){
         Map<String,String> params = new HashMap<>();
-        params.put("phone","18268046852");
-        params.put("password","123456");
+        params.put("phone",phone);
+        params.put("password",password);
         String res = HttpUtil.doPost(url, params);
         System.out.println(res);
     }
 
-    @Test
-    public void test2(){
-        Map<String,String> params = new HashMap<>();
-        params.put("phone","18268046853");
-        params.put("password","123456");
-        String res = HttpUtil.doPost(url, params);
-        System.out.println(res);
+    @DataProvider
+    public Object[][] datas(){
+        Object[][] datas = {
+                {"18268046852","123456"},
+                {"18268046853","123456"},
+                {"1826804","123456"},
+                {"18268046852","12345"},
+        };
+        return datas;
     }
 
-    @Test
-    public void test3(){
-        Map<String,String> params = new HashMap<>();
-        params.put("phone","1826804");
-        params.put("password","123456");
-        String res = HttpUtil.doPost(url, params);
-        System.out.println(res);
-    }
-
-    @Test
-    public void test4(){
-        Map<String,String> params = new HashMap<>();
-        params.put("phone","18268046852");
-        params.put("password","12345");
-        String res = HttpUtil.doPost(url, params);
-        System.out.println(res);
-    }
 }
