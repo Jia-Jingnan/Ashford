@@ -1,11 +1,15 @@
 package com.lilith.cases;
 
+import com.lilith.util.HttpUtil;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author:JiaJingnan
@@ -30,6 +34,14 @@ public class User {
         String result = EntityUtils.toString(response.getEntity());
         System.out.println(statusCode);
         System.out.println(result);
+
+        System.out.println("使用doGet方法请求该接口");
+
+        Map<String,String> params = new HashMap<>();
+        params.put("name","Stark");
+        params.put("age","18");
+        String s = HttpUtil.doGet(url, params);
+        System.out.println(s);
 
     }
 
