@@ -30,14 +30,27 @@ public class RegisterCases {
      *         "password":"12345"
      */
 
-    String url = "http://127.0.0.1:8848/api/member/register";
-
     @Test(dataProvider = "datas")
-    public void testRegister(String parameter){ //{"phone":"1826804","password":"123456"}
-        // 解析json格式字符串,将json格式字符串转换为Map
+    public void testRegister(String apiIdFromCase, String parameter){
+        // 获取接口信息sheet页内容,根据获取的接口编号获取接口地址
+        String url = null;
+        int[] rows = {1,2,3,4};
+        int[] cells = {0,3};
+        String excelPath = "src/main/resources/cases/cases_v3.xlsx";
+        Object[][] datas = ExcelUtil.datas(excelPath,"接口信息",rows,cells);
+        for (Object[] data : datas) {
+            String apiIdFromApiInfo = data[0].toString();
+            // 接口编号一致时，取出url地址
+            if (apiIdFromCase.equals(apiIdFromApiInfo)){
+                url = data[1].toString();
+                break;
+            }
+        }
+
+
+        // 解析json格式字符串,将json格式字符串转换为Map，参数
         Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
-        // 第二种解析方式,需要用到RegisterParam
-        // RegisterParam registerParam = JSONObject.parseObject(parameter, RegisterParam.class);
+
         String res = HttpUtil.doPost(url, params);
         System.out.println(res);
     }
@@ -46,11 +59,12 @@ public class RegisterCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String excelPath = "src/main/resources/cases/cases_v2.xls";
-        // 使用行号列号集合读取数据
+        String excelPath = "src/main/resources/cases/cases_v3.xlsx";
+
         int[] rows = {1,2,3,4};
-        int[] cells = {5};
-        Object[][] datas = ExcelUtil.datas(excelPath,rows,cells);
+        // 获取用例sheet页接口编号第3列，参数第4列
+        int[] cells = {2,3};
+        Object[][] datas = ExcelUtil.datas(excelPath,"用例", rows,cells);
         return datas;
     }
 

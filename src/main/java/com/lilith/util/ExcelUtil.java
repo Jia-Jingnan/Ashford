@@ -12,7 +12,7 @@ import java.io.File;
 public class ExcelUtil {
 
     // 读取连续行和列的数据
-    public static Object[][] datas(String excelPath, int startRow, int endRow, int startCell, int endCell){
+    public static Object[][] datas(String excelPath, String sheetName, int startRow, int endRow, int startCell, int endCell){
 
         // 存储数据的二维数组
         Object[][] datas = null;
@@ -21,7 +21,7 @@ public class ExcelUtil {
             // 获取workbook对象
             Workbook workbook = WorkbookFactory.create(new File(excelPath));
             // 获取sheet对象
-            Sheet sheet = workbook.getSheet("用例");
+            Sheet sheet = workbook.getSheet(sheetName);
 
             datas = new Object[endRow - startRow + 1][endCell - startCell + 1];
 
@@ -46,7 +46,7 @@ public class ExcelUtil {
     }
 
     // 读取非连续的行和列的数据
-    public static Object[][] datas(String excelPath, int[] rows, int[] cells){
+    public static Object[][] datas(String excelPath, String sheetName, int[] rows, int[] cells){
 
         // 存储数据的二维数组
         Object[][] datas = null;
@@ -55,7 +55,7 @@ public class ExcelUtil {
             // 获取workbook对象
             Workbook workbook = WorkbookFactory.create(new File(excelPath));
             // 获取sheet对象
-            Sheet sheet = workbook.getSheet("用例");
+            Sheet sheet = workbook.getSheet(sheetName);
 
             // 定义保存提取出的数据的数组
             datas = new Object[rows.length][cells.length];
@@ -86,7 +86,7 @@ public class ExcelUtil {
         String excelPath = "src/main/resources/cases/cases.xls";
         int[] rows = {1,2,3,4};
         int[] cells = {5,6};
-        Object[][] datas = datas(excelPath,rows,cells);
+        Object[][] datas = datas(excelPath,"用例",rows,cells);
         for (Object[] data : datas) {
             for (Object datum : data) {
                 System.out.print("[" + datum + "]");
