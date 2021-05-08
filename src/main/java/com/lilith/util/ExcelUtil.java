@@ -11,7 +11,6 @@ import java.io.File;
  */
 public class ExcelUtil {
 
-    // 传行号，非索引
     public static Object[][] datas(String excelPath, int startRow, int endRow, int startCell, int endCell){
 
         // 存储数据的二维数组
