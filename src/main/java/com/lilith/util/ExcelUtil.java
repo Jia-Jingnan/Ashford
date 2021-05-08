@@ -11,12 +11,10 @@ import java.io.File;
  */
 public class ExcelUtil {
 
-    public static Object[][] datas(){
+    public static Object[][] datas(String excelPath){
 
         // 存储数据的二维数组
         Object[][] datas = null;
-
-        String excelPath = "src/main/resources/cases/cases.xls";
 
         try {
             // 获取workbook对象
@@ -48,7 +46,8 @@ public class ExcelUtil {
 
     // 验证数据是否取出
     public static void main(String[] args) {
-        Object[][] datas = datas();
+        String excelPath = "src/main/resources/cases/cases.xls";
+        Object[][] datas = datas(excelPath);
         for (Object[] data : datas) {
             for (Object datum : data) {
                 System.out.print("[" + datum + "]");
