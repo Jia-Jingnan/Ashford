@@ -1,5 +1,6 @@
 package com.lilith.cases;
 
+import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,14 +39,11 @@ public class RegisterCases {
         System.out.println(res);
     }
 
+
+    // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        Object[][] datas = {
-                {"18268046852","123456"},
-                {"18268046853","123456"},
-                {"1826804","123456"},
-                {"18268046852","12345"},
-        };
+        Object[][] datas = ExcelUtil.datas();
         return datas;
     }
 
