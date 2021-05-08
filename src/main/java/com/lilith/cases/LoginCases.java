@@ -11,6 +11,8 @@ import java.util.Map;
 /**
  * @Author:JiaJingnan
  * @Date: 上午1:46 2021/5/9
+ * 目前存在的两个大问题：一个Case里面读取两次excel数据源，大量接口测试时会造成大量的磁盘消耗
+ * 二：读取的excel行号列号都写在代码中，耦合性非常高
  */
 public class LoginCases {
 
