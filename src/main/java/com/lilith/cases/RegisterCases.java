@@ -1,6 +1,7 @@
 package com.lilith.cases;
 
 import com.alibaba.fastjson.JSONObject;
+import com.lilith.entity.RegisterParam;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
 import org.testng.annotations.DataProvider;
@@ -35,6 +36,8 @@ public class RegisterCases {
     public void testRegister(String parameter){ //{"phone":"1826804","password":"123456"}
         // 解析json格式字符串,将json格式字符串转换为Map
         Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
+        // 第二种解析方式,需要用到RegisterParam
+        // RegisterParam registerParam = JSONObject.parseObject(parameter, RegisterParam.class);
         String res = HttpUtil.doPost(url, params);
         System.out.println(res);
     }
