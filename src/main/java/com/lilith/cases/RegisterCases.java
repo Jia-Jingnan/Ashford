@@ -1,5 +1,6 @@
 package com.lilith.cases;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
 import org.testng.annotations.DataProvider;
@@ -31,10 +32,9 @@ public class RegisterCases {
     String url = "http://127.0.0.1:8848/api/member/register";
 
     @Test(dataProvider = "datas")
-    public void testRegister(String phone, String password){
-        Map<String,String> params = new HashMap<>();
-        params.put("phone",phone);
-        params.put("password",password);
+    public void testRegister(String parameter){ //{"phone":"1826804","password":"123456"}
+        // 解析json格式字符串,将json格式字符串转换为Map
+        Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
         String res = HttpUtil.doPost(url, params);
         System.out.println(res);
     }
@@ -43,10 +43,10 @@ public class RegisterCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String excelPath = "src/main/resources/cases/cases.xls";
+        String excelPath = "src/main/resources/cases/cases_v2.xls";
         // 使用行号列号集合读取数据
         int[] rows = {1,2,3,4};
-        int[] cells = {5,6};
+        int[] cells = {5};
         Object[][] datas = ExcelUtil.datas(excelPath,rows,cells);
         return datas;
     }
