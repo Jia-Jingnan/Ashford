@@ -43,7 +43,8 @@ public class RegisterCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        Object[][] datas = ExcelUtil.datas();
+        String excelPath = "src/main/resources/cases/cases.xls";
+        Object[][] datas = ExcelUtil.datas(excelPath,1,4,5,6);
         return datas;
     }
 
