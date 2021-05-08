@@ -44,7 +44,10 @@ public class RegisterCases {
     @DataProvider
     public Object[][] datas(){
         String excelPath = "src/main/resources/cases/cases.xls";
-        Object[][] datas = ExcelUtil.datas(excelPath,1,4,5,6);
+        // 使用行号列号集合读取数据
+        int[] rows = {1,2,3,4};
+        int[] cells = {5,6};
+        Object[][] datas = ExcelUtil.datas(excelPath,rows,cells);
         return datas;
     }
 
