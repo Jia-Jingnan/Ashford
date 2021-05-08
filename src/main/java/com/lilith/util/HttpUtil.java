@@ -97,7 +97,7 @@ public class HttpUtil {
     public static String doService(String type, String url, Map<String,String> params){
         String result = null;
         if ("post".equalsIgnoreCase(type)){
-            result = HttpUtil.doPost(url, params);
+            result = HttpUtil.doPost(url,params);
         } else if ("get".equalsIgnoreCase(type)){
             result = HttpUtil.doGet(url,params);
         }

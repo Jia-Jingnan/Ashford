@@ -54,7 +54,7 @@ public class RegisterCases {
         // 解析json格式字符串,将json格式字符串转换为Map，参数
         Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
 
-        String res = HttpUtil.doService(type,type,params);
+        String res = HttpUtil.doService(type,url,params);
 
         System.out.println(res);
     }
