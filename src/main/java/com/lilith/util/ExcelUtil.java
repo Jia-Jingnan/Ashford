@@ -133,6 +133,9 @@ public class ExcelUtil {
             for (int i = 1; i <= lastRowIndex; i++){
                 Case cs = (Case) clazz.newInstance();
                 Row dataRow = sheet.getRow(i);
+                if (dataRow == null){
+                    continue;
+                }
                 // 取出行中的每一列
                 for (int j = 0; j < lastCellNum; j++){
                     Cell cell = dataRow.getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
