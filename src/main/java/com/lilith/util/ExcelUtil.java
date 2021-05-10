@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.time.temporal.ValueRange;
 
 /**
  * @Author:JiaJingnan
@@ -133,7 +134,7 @@ public class ExcelUtil {
             for (int i = 1; i <= lastRowIndex; i++){
                 Case cs = (Case) clazz.newInstance();
                 Row dataRow = sheet.getRow(i);
-                if (dataRow == null){
+                if (dataRow == null || isEmptyRow(dataRow)){
                     continue;
                 }
                 // 取出行中的每一列
@@ -157,5 +158,20 @@ public class ExcelUtil {
             e.printStackTrace();
         }
 
+    }
+
+    private static boolean isEmptyRow(Row dataRow) {
+        short lastCellNum = dataRow.getLastCellNum();
+        for (int i = 0; i < lastCellNum; i++){
+            Cell cell = dataRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            cell.setCellType(CellType.STRING);
+            String value = cell.getStringCellValue();
+            if (value != null && value.trim().length() > 0){
+
+                return false;
+            }
+
+        }
+        return true;
     }
 }
