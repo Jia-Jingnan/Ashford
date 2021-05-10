@@ -28,7 +28,7 @@ public class LoginCases {
         Object[][] datas = ExcelUtil.datas(excelPath,"接口信息",rows,cells);
         for (Object[] data : datas) {
             String apiIdFromApiInfo = data[0].toString();
-            // 接口编号一致时，取出url地址
+            // 接口编号一致时，取出url地址,请求方式
             if (apiIdFromCase.equals(apiIdFromApiInfo)){
                 type = data[1].toString();
                 url = data[2].toString();
