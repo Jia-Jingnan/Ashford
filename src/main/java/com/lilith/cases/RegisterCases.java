@@ -6,6 +6,7 @@ import com.lilith.util.ApiUtil;
 import com.lilith.util.CaseUtil;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -36,7 +37,7 @@ public class RegisterCases {
     // Case(从数组中取出数据执行用例) -> CaseUtil(将对象中数据取出放在数组中) -> ExcelUtil(将数据封装成对象)
 
     @Test(dataProvider = "datas")
-    public void testRegister(String apiId, String parameter){
+    public void testRegister(String apiId, String parameter, String expectedResponseData){
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
         // type
@@ -47,6 +48,7 @@ public class RegisterCases {
 
         String res = HttpUtil.doService(type,url,params);
 
+        Assert.assertEquals(res,expectedResponseData);
         System.out.println(res);
     }
 
@@ -54,8 +56,7 @@ public class RegisterCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String excelPath = "src/main/resources/cases/cases_v4.xlsx";
-        String[] cellNames = {"ApiId","Params"};
+        String[] cellNames = {"ApiId","Params","ExpectedResponseData"};
         Object[][] datas = CaseUtil.getCaseDatasByApiId("1",cellNames);
         return datas;
     }

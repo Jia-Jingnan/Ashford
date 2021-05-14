@@ -5,6 +5,7 @@ import com.lilith.util.ApiUtil;
 import com.lilith.util.CaseUtil;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -19,7 +20,7 @@ import java.util.Map;
 public class LoginCases {
 
     @Test(dataProvider = "datas")
-    public void testLogin(String apiId, String parameter){
+    public void testLogin(String apiId, String parameter, String expectedResponseData){
 
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
@@ -32,15 +33,17 @@ public class LoginCases {
 
         String res = HttpUtil.doService(type,url,params);
 
+        // 实际结果与期望结果比较
+        Assert.assertEquals(res,expectedResponseData);
         System.out.println(res);
+
     }
 
 
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String excelPath = "src/main/resources/cases/cases_v4.xlsx";
-        String[] cellNames = {"ApiId", "Params"};
+        String[] cellNames = {"ApiId", "Params", "ExpectedResponseData"};
         Object[][] datas = CaseUtil.getCaseDatasByApiId("2",cellNames);
         return datas;
     }
