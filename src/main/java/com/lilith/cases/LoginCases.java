@@ -24,6 +24,9 @@ public class LoginCases {
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
 
+        // type
+        String type = ApiUtil.getTypeByApiId(apiId);
+
         // 解析json格式字符串,将json格式字符串转换为Map，参数
         Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
 
