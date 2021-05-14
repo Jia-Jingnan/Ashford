@@ -1,6 +1,8 @@
 package com.lilith.util;
 
+import com.lilith.entity.Api;
 import com.lilith.entity.Case;
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
@@ -100,9 +102,9 @@ public class ExcelUtil {
      * 反向封装：使用反射
      * 使用set+列名组合成set方法，在使用反射调用发方法
      */
-    public static void load(String excelPath, String sheetName) {
+    public static <T> void load(String excelPath, String sheetName, Class<T> tClass) {
 
-        Class clazz = Case.class;
+        // Class clazz = Case.class;
 
         try {
             // 创建workBook对象
@@ -132,7 +134,7 @@ public class ExcelUtil {
             int lastRowIndex = sheet.getLastRowNum();
             // 循环处理每一个数据行
             for (int i = 1; i <= lastRowIndex; i++){
-                Case cs = (Case) clazz.newInstance();
+                Object o = tClass.newInstance();
                 Row dataRow = sheet.getRow(i);
                 if (dataRow == null || isEmptyRow(dataRow)){
                     continue;
@@ -146,13 +148,19 @@ public class ExcelUtil {
                     String methodName = "set" + fields[j];
                     // System.out.println(methodName);
                     // 获取反射Method类
-                    Method method = clazz.getMethod(methodName, String.class);
+                    Method method = tClass.getMethod(methodName, String.class);
                     // 反射
-                    method.invoke(cs,value);
+                    method.invoke(o,value);
                 }
 
-                // 将封装的对象放入列表中
-                CaseUtil.cases.add(cs);
+                if (o instanceof Case){
+                    // 将封装的对象放入列表中
+                    Case cs = (Case) o;
+                    CaseUtil.cases.add(cs);
+                } else if (o instanceof Api){
+                    Api api = (Api) o;
+                    ApiUtil.apis.add(api);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
