@@ -86,14 +86,6 @@ public class ExcelUtil {
         return datas;
     }
 
-    // 验证传入行号列号集合是否取出数据
-    public static void main(String[] args) {
-        String excelPath = "src/main/resources/cases/cases_v4.xlsx";
-        for (Case cs : CaseUtil.cases){
-            System.out.println(cs);
-        }
-    }
-
     /**
      * 加载Excel表中的数据
      * @param excelPath excel相对路径
