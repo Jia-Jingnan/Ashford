@@ -1,18 +1,7 @@
 package com.lilith.cases;
 
-import com.alibaba.fastjson.JSONObject;
-import com.lilith.entity.RegisterParam;
-import com.lilith.entity.Result;
-import com.lilith.util.ApiUtil;
 import com.lilith.util.CaseUtil;
-import com.lilith.util.ExcelUtil;
-import com.lilith.util.HttpUtil;
-import org.testng.Assert;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author:JiaJingnan
