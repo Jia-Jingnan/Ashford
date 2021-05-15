@@ -20,7 +20,7 @@ import java.util.Map;
 public class LoginCases {
 
     @Test(dataProvider = "datas")
-    public void testLogin(String apiId, String parameter, String expectedResponseData){
+    public void testLogin(String caseId, String apiId, String parameter){
 
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
@@ -32,9 +32,9 @@ public class LoginCases {
         Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
 
         String res = HttpUtil.doService(type,url,params);
+        // 回写数据到Excel中，根据CaseId
+        ExcelUtil.writeBackData("src/main/resources/cases/cases_v5.xlsx", "用例", caseId, "ActualResponseData", res);
 
-        // 实际结果与期望结果比较
-        Assert.assertEquals(res,expectedResponseData);
         System.out.println(res);
 
     }
@@ -43,7 +43,7 @@ public class LoginCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String[] cellNames = {"ApiId", "Params", "ExpectedResponseData"};
+        String[] cellNames = {"CaseId", "ApiId", "Params"};
         Object[][] datas = CaseUtil.getCaseDatasByApiId("2",cellNames);
         return datas;
     }

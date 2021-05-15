@@ -37,7 +37,7 @@ public class RegisterCases {
     // Case(从数组中取出数据执行用例) -> CaseUtil(将对象中数据取出放在数组中) -> ExcelUtil(将数据封装成对象)
 
     @Test(dataProvider = "datas")
-    public void testRegister(String apiId, String parameter, String expectedResponseData){
+    public void testRegister(String caseId, String apiId, String parameter){
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
         // type
@@ -48,7 +48,9 @@ public class RegisterCases {
 
         String res = HttpUtil.doService(type,url,params);
 
-        Assert.assertEquals(res,expectedResponseData);
+        // 回写数据到Excel中，根据CaseId
+        ExcelUtil.writeBackData("src/main/resources/cases/cases_v5.xlsx", "用例", caseId, "ActualResponseData", res);
+
         System.out.println(res);
     }
 
@@ -56,7 +58,7 @@ public class RegisterCases {
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String[] cellNames = {"ApiId","Params","ExpectedResponseData"};
+        String[] cellNames = {"CaseId", "ApiId", "Params"};
         Object[][] datas = CaseUtil.getCaseDatasByApiId("1",cellNames);
         return datas;
     }
