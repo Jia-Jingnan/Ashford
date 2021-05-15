@@ -38,3 +38,8 @@ Mock启动方式：
 mock runner jar目录下
 ```java -jar moco-runner-0.11.0-standalone.jar start -p 8848 -c api.json```
 
+在框架中执行接口测试的流程（不含鉴权）：  
+1.在excel数据源中按照列名填入接口相关信息及用例信息  
+2.编写一个测试类，继承BaseCase，类中提供测试所需的数据  
+3.在testng.xml文件中加入测试类  
+4.执行测试套件，执行成功后测试结果会批量写入数据源中的实际响应结果列  
