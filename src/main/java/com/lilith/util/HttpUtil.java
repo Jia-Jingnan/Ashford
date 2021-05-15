@@ -1,6 +1,8 @@
 package com.lilith.util;
 
 import com.alibaba.fastjson.JSONObject;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -22,6 +24,7 @@ import java.util.Set;
  * @Date: 上午12:15 2021/5/8
  * 封装http请求方法
  */
+@Slf4j
 public class HttpUtil {
 
     public static String doPostByJson(String url, Map<String,String> params){
@@ -44,9 +47,11 @@ public class HttpUtil {
             // System.out.println(response.toString());
             //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
             // 状态码
-            int code = response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode();
             // 响应报文
             result = EntityUtils.toString(response.getEntity());
+            log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
+
             // System.out.println(result);
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,9 +87,10 @@ public class HttpUtil {
             // System.out.println(response.toString());
             //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
             // 状态码
-            int code = response.getStatusLine().getStatusCode();
+            int statusCode = response.getStatusLine().getStatusCode();
             // 响应报文
             result = EntityUtils.toString(response.getEntity());
+            log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
             // System.out.println(result);
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,6 +126,7 @@ public class HttpUtil {
             HttpResponse response = httpClient.execute(get);
             int statusCode = response.getStatusLine().getStatusCode();
             result = EntityUtils.toString(response.getEntity());
+            log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
         } catch (IOException e) {
             e.printStackTrace();
         }
