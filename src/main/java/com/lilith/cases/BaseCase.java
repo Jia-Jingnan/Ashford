@@ -30,9 +30,9 @@ public class BaseCase {
         String response = HttpUtil.doService(type,url,params);
 
         // 将响应结果保存在对象中
-        // Result result = new Result("用例",caseId, "ActualResponseData",response);
+        Result result = new Result("用例",caseId, "ActualResponseData",response);
         // 对象保存到resultList中
-        // ExcelUtil.resultList.add(result);
+        ExcelUtil.resultList.add(result);
 
         System.out.println(response);
     }

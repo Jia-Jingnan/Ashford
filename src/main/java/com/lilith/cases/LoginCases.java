@@ -17,28 +17,7 @@ import java.util.Map;
  * 目前存在的两个大问题：一个Case里面读取两次excel数据源，大量接口测试时会造成大量的磁盘消耗
  * 二：读取的excel行号列号都写在代码中，耦合性非常高
  */
-public class LoginCases {
-
-    @Test(dataProvider = "datas")
-    public void testLogin(String caseId, String apiId, String parameter){
-
-        // url
-        String url = ApiUtil.getUrlByApiId(apiId);
-
-        // type
-        String type = ApiUtil.getTypeByApiId(apiId);
-
-        // 解析json格式字符串,将json格式字符串转换为Map，参数
-        Map<String,String> params = (Map<String, String>) JSONObject.parse(parameter);
-
-        String res = HttpUtil.doService(type,url,params);
-        // 回写数据到Excel中，根据CaseId
-        ExcelUtil.writeBackData("src/main/resources/cases/cases_v5.xlsx", "用例", caseId, "ActualResponseData", res);
-
-        System.out.println(res);
-
-    }
-
+public class LoginCases extends BaseCase{
 
     // 使用poi解析Excel中的数据
     @DataProvider
