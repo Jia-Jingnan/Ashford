@@ -7,10 +7,7 @@ import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import sun.text.normalizer.UBiDiProps;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.time.temporal.ValueRange;
 import java.util.HashMap;
@@ -33,6 +30,12 @@ public class ExcelUtil {
         loadRownumAndCellnumMapping("src/main/resources/cases/cases_v5.xlsx","用例");
     }
 
+    /**
+     * 获取caseId以及对应的行索引
+     * 获取cellName以及对应的列索引
+     * @param excelPath
+     * @param sheetName
+     */
     private static void loadRownumAndCellnumMapping(String excelPath, String sheetName) {
         InputStream in = null;
         try {
@@ -58,7 +61,7 @@ public class ExcelUtil {
             // 循环拿到每个数据行
             for (int i = 0; i <= lastRownum ; i++) {
                 Row dataRow = sheet.getRow(i);
-                Cell firstCellOfRow = dataRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                Cell firstCellOfRow = dataRow.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
                 firstCellOfRow.setCellType(CellType.STRING);
                 String caseId = firstCellOfRow.getStringCellValue();
                 int rownum  = dataRow.getRowNum();
@@ -238,9 +241,41 @@ public class ExcelUtil {
         return true;
     }
 
-    public static void writeBackData(String caseId, String cellName, String res) {
+    public static void writeBackData(String excelPath, String sheetName, String caseId, String cellName, String res) {
 
-        int rownum = caseIdRownumMapping.get(caseId);
-        int cellNum = cellNameCellnumMapping.get(cellName);
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new FileInputStream(new File(excelPath));
+            Workbook workbook = WorkbookFactory.create(in);
+            Sheet sheet = workbook.getSheet(sheetName);
+            int rownum = caseIdRownumMapping.get(caseId);
+            Row row = sheet.getRow(rownum);
+            int cellNum = cellNameCellnumMapping.get(cellName);
+            Cell cell = row.getCell(cellNum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+            cell.setCellType(CellType.STRING);
+            // 设置cell的value
+            cell.setCellValue(res);
+            // 写入
+            out = new FileOutputStream(new File(excelPath));
+            workbook.write(out);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        } finally {
+            // 关闭流
+            try {
+                if (in != null){
+                    in.close();
+                }
+                if (out != null){
+                    out.close();
+                }
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+
     }
 }
