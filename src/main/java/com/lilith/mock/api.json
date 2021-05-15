@@ -123,45 +123,7 @@
     }
   },
   {
-    "description": "接口3.列表查询",
-    "request": {
-      "uri": "/api/member/list",
-      "method": "get",
-      "cookies": {
-        "login": "true"
-      }
-    },
-    "response": {
-      "headers": {
-        "Content-Type": "text/html;charset=utf-8"
-      },
-      "json": {
-        "name": "stark,thor,loki,steve,banner"
-      }
-    }
-  },
-  {
-    "description": "接口4.根据user查询用户",
-    "request": {
-      "uri": "/api/member/user",
-      "method": "get",
-      "cookies": {
-        "login": "true"
-      },
-      "queries": {
-        "name": "Stark",
-        "age": "18"
-      }
-    },
-    "response": {
-      "headers": {
-        "Content-Type": "text/html;charset=gbk"
-      },
-      "text": "I am IronMan!"
-    }
-  },
-  {
-    "description":"接口5.充值接口-充值成功",
+    "description":"接口3.充值接口-充值成功",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
@@ -184,7 +146,7 @@
     }
   },
   {
-    "description":"接口5.充值接口-请输入范围在0到50万之间的正数金额",
+    "description":"接口3.充值接口-请输入范围在0到50万之间的正数金额",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
@@ -207,7 +169,7 @@
     }
   },
   {
-    "description":"接口5.充值接口-输入金额的金额小数不能超过两位",
+    "description":"接口3.充值接口-输入金额的金额小数不能超过两位",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
@@ -230,7 +192,7 @@
     }
   },
   {
-    "description":"接口5.充值接口-手机号格式不正确",
+    "description":"接口3.充值接口-手机号格式不正确",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
@@ -250,7 +212,7 @@
     }
   },
   {
-    "description":"接口5.充值接口-手机号对应会员不存在",
+    "description":"接口3.充值接口-手机号对应会员不存在",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
@@ -270,7 +232,7 @@
     }
   },
   {
-    "description":"接口6.取现接口-取现成功",
+    "description":"接口4.取现接口-取现成功",
     "request":{
       "uri":"/api/member/withdraw",
       "method":"post",
@@ -289,6 +251,46 @@
         "code": "10001",
         "data": "余额为0元",
         "msg": "取现成功"
+      }
+    }
+  },
+  {
+    "description": "接口5.列表查询",
+    "request": {
+      "uri": "/api/member/list",
+      "method": "get",
+      "cookies": {
+        "login": "true"
+      }
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8"
+      },
+      "json": {
+        "name": "stark,thor,loki,steve,banner"
+      }
+    }
+  },
+  {
+    "description": "接口6.根据user查询用户",
+    "request": {
+      "uri": "/api/member/user",
+      "method": "get",
+      "cookies": {
+        "login": "true"
+      },
+      "queries": {
+        "name": "Stark",
+        "age": "18"
+      }
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=gbk"
+      },
+      "json": {
+        "msg": "I am IronMan"
       }
     }
   }
