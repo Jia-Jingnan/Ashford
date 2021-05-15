@@ -5,6 +5,7 @@ import com.lilith.entity.Case;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
+import sun.text.normalizer.UBiDiProps;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,8 +23,6 @@ import java.util.Map;
  */
 public class ExcelUtil {
 
-
-
     // 为writeBack方法使用，存储caseID和行号的映射
     public static Map<String,Integer> caseIdRownumMapping = new HashMap<>();
     // 列名和列号的映射
@@ -35,8 +34,9 @@ public class ExcelUtil {
     }
 
     private static void loadRownumAndCellnumMapping(String excelPath, String sheetName) {
+        InputStream in = null;
         try {
-            InputStream in = new FileInputStream(new File(excelPath));
+            in = new FileInputStream(new File(excelPath));
             Workbook workbook = WorkbookFactory.create(in);
             Sheet sheet = workbook.getSheet(sheetName);
             // 标题行
@@ -67,6 +67,14 @@ public class ExcelUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (in != null){
+                    in.close();
+                }
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
         }
 
     }
