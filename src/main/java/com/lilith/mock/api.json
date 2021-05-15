@@ -4,7 +4,7 @@
     "request":{
       "uri":"/api/member/register",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"18268046852",
         "password":"123456"
       }
@@ -24,7 +24,7 @@
     "request":{
       "uri":"/api/member/register",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"18268046853",
         "password":"123456"
       }
@@ -44,7 +44,7 @@
     "request":{
       "uri":"/api/member/register",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"1826804",
         "password":"123456"
       }
@@ -64,7 +64,7 @@
     "request":{
       "uri":"/api/member/register",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"18268046852",
         "password":"12345"
       }
@@ -84,7 +84,7 @@
     "request":{
       "uri":"/api/member/login",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"18268046852",
         "password":"123456"
       }
@@ -92,8 +92,7 @@
     "response":{
       "status":200,
       "cookies":{
-        "login":"true",
-        "status":"10000"
+        "login":"true"
       },
       "json": {
         "status": 0,
@@ -108,7 +107,7 @@
     "request":{
       "uri":"/api/member/login",
       "method":"post",
-      "forms":{
+      "json":{
         "phone":"18268046854",
         "password":"123456"
       }
