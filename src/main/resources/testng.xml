@@ -17,4 +17,11 @@
                 <class name="com.lilith.cases.LoginCases"></class>
             </classes>
         </test>
+        <test name="recharge">
+            <!--测试类-->
+            <classes>
+                <!--单个测试类定义-->
+                <class name="com.lilith.cases.RechargeCases"></class>
+            </classes>
+        </test>
 </suite> <!-- Suite -->
