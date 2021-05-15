@@ -3,6 +3,7 @@ package com.lilith.cases;
 import com.alibaba.fastjson.JSONObject;
 import com.lilith.entity.Result;
 import com.lilith.util.ApiUtil;
+import com.lilith.util.AssertUtil;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
 import org.testng.annotations.AfterSuite;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class BaseCase {
 
     @Test(dataProvider = "datas")
-    public void test(String caseId, String apiId, String parameter){
+    public void test(String caseId, String apiId, String parameter, String expectedResponseData){
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
         // type
@@ -29,12 +30,16 @@ public class BaseCase {
 
         String response = HttpUtil.doService(type,url,params);
 
+        // 如果相同，在Excel表中写入通过， 否则写入实际结果
+        response = AssertUtil.assertEquals(response, expectedResponseData);
+        System.out.println(response);
+
         // 将响应结果保存在对象中
         Result result = new Result("用例",caseId, "ActualResponseData",response);
         // 对象保存到resultList中
         ExcelUtil.resultList.add(result);
 
-        System.out.println(response);
+        // System.out.println(response);
     }
 
     @AfterSuite

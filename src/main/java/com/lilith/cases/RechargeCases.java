@@ -16,7 +16,7 @@ public class RechargeCases extends BaseCase{
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        String[] cellNames = {"CaseId", "ApiId", "Params"};
+        String[] cellNames = {"CaseId", "ApiId", "Params", "ExpectedResponseData"};
         Object[][] datas = CaseUtil.getCaseDatasByApiId("3",cellNames);
         return datas;
     }
