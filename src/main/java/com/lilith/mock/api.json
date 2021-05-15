@@ -1,37 +1,6 @@
 [
-
   {
-    "description": "模拟一个没有参数的get请求",
-    "request": {
-      "uri": "/api/member/list",
-      "method": "get"
-    },
-    "response": {
-      "headers": {
-        "Content-Type": "text/html;charset=utf-8"
-      },
-      "text": "员工列表"
-    }
-  },
-  {
-    "description": "这是一个带参数的get请求",
-    "request": {
-      "uri": "/api/member/user",
-      "method": "get",
-      "queries": {
-        "name": "Stark",
-        "age": "18"
-      }
-    },
-    "response": {
-      "headers": {
-        "Content-Type": "text/html;charset=gbk"
-      },
-      "text": "I am IronMan!"
-    }
-  },
-  {
-    "description":"注册成功接口",
+    "description":"接口1.注册成功接口",
     "request":{
       "uri":"/api/member/register",
       "method":"post",
@@ -51,7 +20,7 @@
     }
   },
   {
-    "description":"注册失败接口",
+    "description":"接口1.注册失败接口-该手机号已被注册",
     "request":{
       "uri":"/api/member/register",
       "method":"post",
@@ -71,7 +40,7 @@
     }
   },
   {
-    "description":"注册失败接口-不合格的手机号",
+    "description":"接口1.注册失败接口-不合格的手机号",
     "request":{
       "uri":"/api/member/register",
       "method":"post",
@@ -91,7 +60,7 @@
     }
   },
   {
-    "description":"注册失败接口-密码长度必须为6-18",
+    "description":"接口1.注册失败接口-密码长度必须为6-18",
     "request":{
       "uri":"/api/member/register",
       "method":"post",
@@ -111,7 +80,7 @@
     }
   },
   {
-    "description":"登陆成功",
+    "description":"接口2.登陆接口-登陆成功,返回cookie",
     "request":{
       "uri":"/api/member/login",
       "method":"post",
@@ -122,6 +91,10 @@
     },
     "response":{
       "status":200,
+      "cookies":{
+        "login":"true",
+        "status":"10000"
+      },
       "json": {
         "status": 0,
         "code": "10001",
@@ -131,21 +104,7 @@
     }
   },
   {
-    "description":"这是一个会返回cookies信息的get请求",
-    "request":{
-      "uri":"/api/member/getCookies",
-      "method":"get"
-    },
-    "response":{
-      "cookies":{
-        "login":"true",
-        "status":"10000"
-      },
-      "text":"恭喜获得cookies信息成功"
-    }
-  },
-  {
-    "description":"登陆失败，用户名或密码错误",
+    "description":"接口2.登陆接口-用户名或密码错误",
     "request":{
       "uri":"/api/member/login",
       "method":"post",
@@ -165,16 +124,77 @@
     }
   },
   {
-    "description":"充值接口-请输入范围在0到50万之间的正数金额",
+    "description": "接口3.列表查询",
+    "request": {
+      "uri": "/api/member/list",
+      "method": "get",
+      "cookies": {
+        "login": "true"
+      }
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=utf-8"
+      },
+      "json": {
+        "name": "stark,thor,loki,steve,banner"
+      }
+    }
+  },
+  {
+    "description": "接口4.根据user查询用户",
+    "request": {
+      "uri": "/api/member/user",
+      "method": "get",
+      "cookies": {
+        "login": "true"
+      },
+      "queries": {
+        "name": "Stark",
+        "age": "18"
+      }
+    },
+    "response": {
+      "headers": {
+        "Content-Type": "text/html;charset=gbk"
+      },
+      "text": "I am IronMan!"
+    }
+  },
+  {
+    "description":"接口5.充值接口-充值成功",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
       "cookies": {
         "login": "true"
       },
-      "forms":{
-        "phone":"15868821400",
-        "password":"123456123"
+      "json":{
+        "phone": "18268046852",
+        "amount": "100"
+      }
+    },
+    "response":{
+      "status":200,
+      "json": {
+        "status": 0,
+        "code": "10001",
+        "data": "目前账户余额100元",
+        "msg": "充值成功"
+      }
+    }
+  },
+  {
+    "description":"接口5.充值接口-请输入范围在0到50万之间的正数金额",
+    "request":{
+      "uri":"/api/member/recharge",
+      "method":"post",
+      "cookies": {
+        "login": "true"
+      },
+      "json":{
+        "phone": "18268046852",
+        "amount": "-100"
       }
     },
     "response":{
@@ -188,16 +208,16 @@
     }
   },
   {
-    "description":"充值接口-输入金额的金额小数不能超过两位",
+    "description":"接口5.充值接口-输入金额的金额小数不能超过两位",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
       "cookies": {
         "login": "true"
       },
-      "forms":{
-        "phone":"15868821400",
-        "password":"123456.00112"
+      "json":{
+        "phone": "18268046852",
+        "amount": "100.000"
       }
     },
     "response":{
@@ -211,13 +231,13 @@
     }
   },
   {
-    "description":"充值接口-手机号格式不正确",
+    "description":"接口5.充值接口-手机号格式不正确",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
-      "forms":{
-        "phone":"1586880",
-        "password":"123456"
+      "json":{
+        "phone": "1826804",
+        "amount": "100"
       }
     },
     "response":{
@@ -231,33 +251,13 @@
     }
   },
   {
-    "description":"充值接口-充值成功",
+    "description":"接口5.充值接口-手机号对应会员不存在",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
-      "forms":{
-        "phone":"15868821400",
-        "password":"123456"
-      }
-    },
-    "response":{
-      "status":200,
-      "json": {
-        "status": 0,
-        "code": "10001",
-        "data": null,
-        "msg": "充值成功"
-      }
-    }
-  },
-  {
-    "description":"充值接口-手机号对应会员不存在",
-    "request":{
-      "uri":"/api/member/recharge",
-      "method":"post",
-      "forms":{
-        "phone":"15868821499",
-        "password":"123456"
+      "json":{
+        "phone": "18268046853",
+        "amount": "100"
       }
     },
     "response":{
@@ -267,6 +267,29 @@
         "code": "20104",
         "data": null,
         "msg": "手机号对应会员不存在"
+      }
+    }
+  },
+  {
+    "description":"接口6.取现接口-取现成功",
+    "request":{
+      "uri":"/api/member/withdraw",
+      "method":"post",
+      "cookies": {
+        "login": "true"
+      },
+      "json":{
+        "phone": "18268046852",
+        "amount": "100"
+      }
+    },
+    "response":{
+      "status":200,
+      "json": {
+        "status": 0,
+        "code": "10001",
+        "data": "余额为0元",
+        "msg": "取现成功"
       }
     }
   }
