@@ -18,7 +18,7 @@ import java.util.Map;
 public class BaseCase {
 
     @Test(dataProvider = "datas")
-    public void testRegister(String caseId, String apiId, String parameter){
+    public void test(String caseId, String apiId, String parameter){
         // url
         String url = ApiUtil.getUrlByApiId(apiId);
         // type
@@ -39,7 +39,7 @@ public class BaseCase {
 
     @AfterSuite
     public void batchWriteDatas(){
-        ExcelUtil.batchWriteDatas("src/main/resources/cases/cases_v5.xlsx");
+        ExcelUtil.batchWriteDatas("src/main/resources/cases/cases_v6.xlsx");
     }
 
 }

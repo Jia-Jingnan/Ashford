@@ -33,7 +33,7 @@ public class ExcelUtil {
 
     static {
         // caseIdRownumMapping，cellNameCellnumMapping存入数据，供wirteBackData使用
-        loadRownumAndCellnumMapping("src/main/resources/cases/cases_v5.xlsx","用例");
+        loadRownumAndCellnumMapping("src/main/resources/cases/cases_v6.xlsx","用例");
     }
 
     /**
