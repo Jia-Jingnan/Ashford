@@ -2,12 +2,18 @@ package com.lilith.util;
 
 import com.lilith.entity.Api;
 import com.lilith.entity.Case;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.time.temporal.ValueRange;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author:JiaJingnan
@@ -15,6 +21,55 @@ import java.time.temporal.ValueRange;
  * 使用poi解析Excel的工具类
  */
 public class ExcelUtil {
+
+
+
+    // 为writeBack方法使用，存储caseID和行号的映射
+    public static Map<String,Integer> caseIdRownumMapping = new HashMap<>();
+    // 列名和列号的映射
+    public static Map<String,Integer> cellNameCellnumMapping = new HashMap<>();
+
+    static {
+        // caseIdRownumMapping，cellNameCellnumMapping存入数据，供wirteBackData使用
+        loadRownumAndCellnumMapping("src/main/resources/cases/cases_v5.xlsx","用例");
+    }
+
+    private static void loadRownumAndCellnumMapping(String excelPath, String sheetName) {
+        try {
+            InputStream in = new FileInputStream(new File(excelPath));
+            Workbook workbook = WorkbookFactory.create(in);
+            Sheet sheet = workbook.getSheet(sheetName);
+            // 标题行
+            Row titleRow = sheet.getRow(0);
+            if (titleRow != null && !isEmptyRow(titleRow)){
+                int lastCellNum = titleRow.getLastCellNum();
+                for (int i = 0; i < lastCellNum; i++) {
+                    Cell cell = titleRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    cell.setCellType(CellType.STRING);
+                    String title = cell.getStringCellValue();
+                    title = title.substring(0,title.indexOf("("));
+                    int cellnum = cell.getAddress().getColumn();
+                    // 拿到标题和索引映射关系存入map中，保存为映射关系
+                    cellNameCellnumMapping.put(title,cellnum);
+                }
+            }
+            // 从第二行开始
+            int lastRownum = sheet.getLastRowNum();
+            // 循环拿到每个数据行
+            for (int i = 0; i <= lastRownum ; i++) {
+                Row dataRow = sheet.getRow(i);
+                Cell firstCellOfRow = dataRow.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                firstCellOfRow.setCellType(CellType.STRING);
+                String caseId = firstCellOfRow.getStringCellValue();
+                int rownum  = dataRow.getRowNum();
+                // 保存在caseId和行号的map中
+                caseIdRownumMapping.put(caseId,rownum);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     // 读取连续行和列的数据
     public static Object[][] datas(String excelPath, String sheetName, int startRow, int endRow, int startCell, int endCell){
@@ -173,5 +228,11 @@ public class ExcelUtil {
 
         }
         return true;
+    }
+
+    public static void writeBackData(String caseId, String cellName, String res) {
+
+        int rownum = caseIdRownumMapping.get(caseId);
+        int cellNum = cellNameCellnumMapping.get(cellName);
     }
 }
