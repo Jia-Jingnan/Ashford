@@ -1,10 +1,12 @@
 package com.lilith.util;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -22,7 +24,38 @@ import java.util.Set;
  */
 public class HttpUtil {
 
-    public static String doPost(String url, Map<String,String> params){
+    public static String doPostByJson(String url, Map<String,String> params){
+        String result = null;
+
+        //2.指定接口请求方式
+        HttpPost post = new HttpPost(url);
+
+        try {
+            String stringParams = JSONObject.toJSONString(params);
+
+            StringEntity stringEntity = new StringEntity(stringParams);
+
+            post.setEntity(stringEntity);
+            //4.准备请求头数据
+            post.setHeader("Content-Type","application/json");
+            //5.发起请求，获取接口响应信息
+            HttpClient client = HttpClients.createDefault();
+            HttpResponse response = client.execute(post);
+            // System.out.println(response.toString());
+            //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
+            // 状态码
+            int code = response.getStatusLine().getStatusCode();
+            // 响应报文
+            result = EntityUtils.toString(response.getEntity());
+            // System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
+    public static String doPostByForm(String url, Map<String,String> params){
 
         String result = null;
 
@@ -97,7 +130,7 @@ public class HttpUtil {
     public static String doService(String type, String url, Map<String,String> params){
         String result = null;
         if ("post".equalsIgnoreCase(type)){
-            result = HttpUtil.doPost(url,params);
+            result = HttpUtil.doPostByJson(url,params);
         } else if ("get".equalsIgnoreCase(type)){
             result = HttpUtil.doGet(url,params);
         }
