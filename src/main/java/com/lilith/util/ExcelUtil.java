@@ -2,6 +2,8 @@ package com.lilith.util;
 
 import com.lilith.entity.Api;
 import com.lilith.entity.Case;
+import com.lilith.entity.Result;
+import jdk.internal.util.xml.impl.Input;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
@@ -10,7 +12,9 @@ import sun.text.normalizer.UBiDiProps;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.time.temporal.ValueRange;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +28,8 @@ public class ExcelUtil {
     public static Map<String,Integer> caseIdRownumMapping = new HashMap<>();
     // 列名和列号的映射
     public static Map<String,Integer> cellNameCellnumMapping = new HashMap<>();
+    // 保存数据回写Excel对象的集合
+    public static List<Result> resultList = new ArrayList<>();
 
     static {
         // caseIdRownumMapping，cellNameCellnumMapping存入数据，供wirteBackData使用
@@ -278,4 +284,47 @@ public class ExcelUtil {
         }
 
     }
+
+    /**
+     * 批量回写数据的方法
+     * @param excelPath
+     */
+    public static void batchWriteDatas(String excelPath) {
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new FileInputStream(new File(excelPath));
+            Workbook workbook = WorkbookFactory.create(in);
+            for (Result result : resultList){
+                String sheetName = result.getSheetName();
+                Sheet sheet = workbook.getSheet(sheetName);
+
+                String caseId = result.getCaseId();
+                int rownum = caseIdRownumMapping.get(caseId);
+                Row row = sheet.getRow(rownum);
+                String cellName = result.getCellName();
+                int cellnum = cellNameCellnumMapping.get(cellName);
+                Cell cell = row.getCell(cellnum, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                cell.setCellType(CellType.STRING);
+                String res = result.getRes();
+                cell.setCellValue(res);
+            }
+            out = new FileOutputStream(new File(excelPath));
+            workbook.write(out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null){
+                    in.close();
+                }
+                if (out != null){
+                    out.close();
+                }
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        }
+    }
+
 }
