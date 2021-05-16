@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Header;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -46,7 +47,11 @@ public class HttpUtil {
 
             post.setEntity(stringEntity);
             //4.准备请求头数据
-            post.setHeader("Content-Type","application/json");
+            // post.setHeader("Content-Type","application/json");
+            // 设置头中的cookie
+
+            // 设置头中的token
+
             //5.发起请求，获取接口响应信息
             HttpClient client = HttpClients.createDefault();
             HttpResponse response = client.execute(post);
@@ -190,6 +195,18 @@ public class HttpUtil {
             e.printStackTrace();
         }
 
+    }
+
+    public static void setHeaders(HttpRequest request){
+        request.addHeader("Content-Type","application/json");
+        String cookieValue = cookies.get(cookieFlag);
+        if (cookieValue != null){
+            request.addHeader(cookieFlag,cookieValue);
+        }
+        String tokenValue = token.get(tokenFlag);
+        if (tokenValue != null){
+            request.addHeader(tokenFlag,tokenValue);
+        }
     }
 
 }
