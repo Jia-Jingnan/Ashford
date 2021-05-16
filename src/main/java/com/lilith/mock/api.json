@@ -92,13 +92,34 @@
     "response":{
       "status":200,
       "cookies":{
-        "login":"true"
+        "JSESSIONID":"123abc456def"
       },
       "json": {
         "status": 0,
         "code": "10001",
         "data": null,
         "msg": "登陆成功"
+      }
+    }
+  },
+  {
+    "description":"接口2.登陆接口-登陆成功,返回token",
+    "request":{
+      "uri":"/api/member/login",
+      "method":"post",
+      "json":{
+        "phone":"18268046852",
+        "password":"123456789"
+      }
+    },
+    "response":{
+      "status":200,
+      "json": {
+        "status": 0,
+        "code": "10001",
+        "data": null,
+        "msg": "登陆成功",
+        "token": "123456789abcdefg"
       }
     }
   },
@@ -123,12 +144,32 @@
     }
   },
   {
-    "description":"接口3.充值接口-充值成功",
+    "description":"接口3.充值接口-登陆后再试",
+    "request":{
+      "uri":"/api/member/recharge",
+      "method":"post",
+      "json":{
+        "phone": "18268046852",
+        "amount": "1000"
+      }
+    },
+    "response":{
+      "status":200,
+      "json": {
+        "status": 0,
+        "code": "10002",
+        "data": "null",
+        "msg": "请登录后再试"
+      }
+    }
+  },
+  {
+    "description":"接口3.充值接口-充值成功,需要cookie",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       },
       "json":{
         "phone": "18268046852",
@@ -146,12 +187,35 @@
     }
   },
   {
+    "description":"接口3.充值接口-充值成功,需要token",
+    "request":{
+      "uri":"/api/member/recharge",
+      "method":"post",
+      "cookies": {
+        "Authentication": "123456789abcdefg"
+      },
+      "json":{
+        "phone": "18268046852",
+        "amount": "10000"
+      }
+    },
+    "response":{
+      "status":200,
+      "json": {
+        "status": 0,
+        "code": "10001",
+        "data": "目前账户余额1000元",
+        "msg": "充值成功"
+      }
+    }
+  },
+  {
     "description":"接口3.充值接口-请输入范围在0到50万之间的正数金额",
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       },
       "json":{
         "phone": "18268046852",
@@ -174,7 +238,7 @@
       "uri":"/api/member/recharge",
       "method":"post",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       },
       "json":{
         "phone": "18268046852",
@@ -196,6 +260,9 @@
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
+      "cookies": {
+        "JSESSIONID": "123abc456def"
+      },
       "json":{
         "phone": "1826804",
         "amount": "100"
@@ -216,6 +283,9 @@
     "request":{
       "uri":"/api/member/recharge",
       "method":"post",
+      "cookies": {
+        "JSESSIONID": "123abc456def"
+      },
       "json":{
         "phone": "18268046853",
         "amount": "100"
@@ -237,7 +307,7 @@
       "uri":"/api/member/withdraw",
       "method":"post",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       },
       "json":{
         "phone": "18268046852",
@@ -260,7 +330,7 @@
       "uri": "/api/member/list",
       "method": "get",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       }
     },
     "response": {
@@ -278,7 +348,7 @@
       "uri": "/api/member/user",
       "method": "get",
       "cookies": {
-        "login": "true"
+        "JSESSIONID": "123abc456def"
       },
       "queries": {
         "name": "Stark",
