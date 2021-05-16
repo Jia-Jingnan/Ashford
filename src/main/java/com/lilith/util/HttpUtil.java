@@ -3,6 +3,7 @@ package com.lilith.util;
 import com.alibaba.fastjson.JSONObject;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -12,12 +13,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author:JiaJingnan
@@ -26,6 +25,13 @@ import java.util.Set;
  */
 @Slf4j
 public class HttpUtil {
+
+    public static Map<String, String> cookies = new HashMap<>();
+    // cookie中表示已登陆的字段
+    public static String cookieFlag = "JSESSIONID";
+    public static Map<String, String> token = new HashMap<>();
+    // 接口响应中表示token字段名
+    public static String tokenFlag = "token";
 
     public static String doPostByJson(String url, Map<String,String> params){
         String result = null;
@@ -46,10 +52,15 @@ public class HttpUtil {
             HttpResponse response = client.execute(post);
             // System.out.println(response.toString());
             //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
+            //判断接口响应的header中是否有Set-Cookie
+            getAndStoreCookiesFromResHeader(response,cookieFlag);
+
             // 状态码
             int statusCode = response.getStatusLine().getStatusCode();
             // 响应报文
             result = EntityUtils.toString(response.getEntity());
+            // 从body中取出表示表示已登陆的字段
+            getAndStoreTokenFromSingleResBody(result,tokenFlag);
             log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
 
             // System.out.println(result);
@@ -59,6 +70,7 @@ public class HttpUtil {
         return result;
 
     }
+
 
     public static String doPostByForm(String url, Map<String,String> params){
 
@@ -144,4 +156,40 @@ public class HttpUtil {
 
         return result;
     }
+
+    private static void getAndStoreCookiesFromResHeader(HttpResponse response,String flag) {
+        // 从header中取出"Set-Cookie"响应头
+        Header setCookieHeader = response.getFirstHeader("Set-Cookie");
+        if (setCookieHeader!=null){
+            //  取出响应头的值
+            String cookiePairsString = setCookieHeader.getValue();
+            if (cookiePairsString != null && cookiePairsString.length() > 0){
+                String[] cookiePairs = cookiePairsString.split(";");
+                for (String s : cookiePairs) {
+                    // 如果包含name如"JSESSIONID"或其他可以表示已登陆的字段，保存到Map中
+                    if (s.contains(flag)){
+                        // 保存到map中
+                        cookies.put(flag,s);
+                    }
+                }
+            }
+        }
+    }
+
+    // 从单一json响应中取出token
+    private static void getAndStoreTokenFromSingleResBody(String response,String flag) {
+        try {
+            // 将json转换为map
+            Map<String,String> responseMap = (Map<String, String>) JSONObject.parse(response);
+            if (responseMap.containsKey(flag)){
+                String value = responseMap.get(flag);
+                // System.out.println(flag + responseMap.get(flag));
+                token.put("msg",value);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
