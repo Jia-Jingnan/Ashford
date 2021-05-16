@@ -7,6 +7,7 @@ import com.lilith.util.AssertUtil;
 import com.lilith.util.ExcelUtil;
 import com.lilith.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 
@@ -46,7 +47,8 @@ public class BaseCase {
         // 对象保存到resultList中
         ExcelUtil.resultList.add(result);
 
-        // System.out.println(response);
+        // 在测试套件中显示结果是否通过
+        Assert.assertEquals(response,"通过");
     }
 
     @AfterSuite
