@@ -35,7 +35,7 @@ public class HttpUtil {
     public static String tokenFlag = "token";
 
     public static String doPostByJson(String url, Map<String,String> params){
-        String result = null;
+        String result = "";
 
         //2.指定接口请求方式
         HttpPost post = new HttpPost(url);
@@ -47,13 +47,11 @@ public class HttpUtil {
 
             post.setEntity(stringEntity);
             //4.准备请求头数据
-            // post.setHeader("Content-Type","application/json");
-            // 设置头中的cookie
-
-            // 设置头中的token
+            setHeaders(post);
 
             //5.发起请求，获取接口响应信息
             HttpClient client = HttpClients.createDefault();
+
             HttpResponse response = client.execute(post);
             // System.out.println(response.toString());
             //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
@@ -65,7 +63,7 @@ public class HttpUtil {
             // 响应报文
             result = EntityUtils.toString(response.getEntity());
             // 从body中取出表示表示已登陆的字段
-            getAndStoreTokenFromSingleResBody(result,tokenFlag);
+            // getAndStoreTokenFromSingleResBody(result,tokenFlag);
             log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
 
             // System.out.println(result);
@@ -183,29 +181,30 @@ public class HttpUtil {
 
     // 从单一json响应中取出token
     private static void getAndStoreTokenFromSingleResBody(String response,String flag) {
-        try {
-            // 将json转换为map
-            Map<String,String> responseMap = (Map<String, String>) JSONObject.parse(response);
-            if (responseMap.containsKey(flag)){
-                String value = responseMap.get(flag);
-                // System.out.println(flag + responseMap.get(flag));
-                token.put("msg",value);
+        if (response != null){
+            try {
+                // 将json转换为map
+                Map<String,String> responseMap = (Map<String, String>) JSONObject.parse(response);
+                if (responseMap.containsKey(flag)){
+                    String value = responseMap.get(flag);
+                    // System.out.println(flag + responseMap.get(flag));
+                    token.put("msg",value);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
     }
 
     public static void setHeaders(HttpRequest request){
         request.addHeader("Content-Type","application/json");
         String cookieValue = cookies.get(cookieFlag);
         if (cookieValue != null){
-            request.addHeader(cookieFlag,cookieValue);
+            request.addHeader("Cookie",cookieValue);
         }
         String tokenValue = token.get(tokenFlag);
         if (tokenValue != null){
-            request.addHeader(tokenFlag,tokenValue);
+            request.addHeader("Authentication",tokenValue);
         }
     }
 
