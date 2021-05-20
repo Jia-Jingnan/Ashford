@@ -135,6 +135,8 @@ public class HttpUtil {
         // 指定请求方式
         HttpGet get = new HttpGet(url);
 
+        setHeaders(get);
+
         try {
             // 发送请求
             HttpClient httpClient = HttpClients.createDefault();
@@ -214,6 +216,7 @@ public class HttpUtil {
 
     }
 
+    // 带token的json格式的post请求
     public static String doPostByJson(String url, Map<String,String> params, String tokenParam, String tokenValue){
         String result = "";
 
@@ -252,6 +255,45 @@ public class HttpUtil {
         }
         return result;
 
+    }
+
+    // 带token的get请求
+    public static String doGet(String url, Map<String,String> params, String tokenParam, String tokenValue){
+
+        String result = null;
+
+        // 取出map中的参数和value，循环map,然后加入请求体paramesters中
+        Set<String> keys = params.keySet();
+        // 循环map
+        // 定义标识位,通过mark判断是否是第一个参数，第一个参数前面需要加？
+        int mark = 1;
+        for (String key : keys) {
+            String value = params.get(key);
+            if (mark == 1){
+                url += ("?"+ key + "=" + value);
+            } else {
+                url += ("&" + key + "=" + value);
+            }
+            mark ++;
+        }
+
+        // 指定请求方式
+        HttpGet get = new HttpGet(url);
+
+        setHeaders(get,tokenParam,tokenValue);
+
+        try {
+            // 发送请求
+            HttpClient httpClient = HttpClients.createDefault();
+            HttpResponse response = httpClient.execute(get);
+            int statusCode = response.getStatusLine().getStatusCode();
+            result = EntityUtils.toString(response.getEntity());
+            log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 
