@@ -32,7 +32,7 @@ public class HttpUtil {
     public static String cookieFlag = "JSESSIONID";
     public static Map<String, String> token = new HashMap<>();
     // 接口响应中表示token字段名
-    public static String tokenFlag = "token";
+    // public static String tokenFlag = "token";
 
     public static String doPostByJson(String url, Map<String,String> params){
         String result = "";
@@ -180,7 +180,7 @@ public class HttpUtil {
     }
 
     // 从单一json响应中取出token
-    private static void getAndStoreTokenFromSingleResBody(String response,String flag) {
+    /*private static void getAndStoreTokenFromSingleResBody(String response,String flag) {
         if (response != null){
             try {
                 // 将json转换为map
@@ -194,18 +194,67 @@ public class HttpUtil {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
 
+    // 设置cookie
     public static void setHeaders(HttpRequest request){
         request.addHeader("Content-Type","application/json");
         String cookieValue = cookies.get(cookieFlag);
         if (cookieValue != null){
             request.addHeader("Cookie",cookieValue);
         }
-        String tokenValue = token.get(tokenFlag);
-        if (tokenValue != null){
-            request.addHeader("Authentication",tokenValue);
-        }
     }
+
+    // 设置token
+    public static void setHeaders(HttpRequest request, String tokenParam, String tokenValue){
+        request.addHeader("Content-Type","application/json");
+        if (tokenValue != null){
+            request.addHeader(tokenParam,tokenValue);
+        }
+
+    }
+
+    public static String doPostByJson(String url, Map<String,String> params, String tokenParam, String tokenValue){
+        String result = "";
+
+        //2.指定接口请求方式
+        HttpPost post = new HttpPost(url);
+
+        try {
+            String stringParams = JSONObject.toJSONString(params);
+
+            StringEntity stringEntity = new StringEntity(stringParams);
+
+            post.setEntity(stringEntity);
+            //4.准备请求头数据
+            setHeaders(post,tokenParam,tokenValue);
+
+            //5.发起请求，获取接口响应信息
+            HttpClient client = HttpClients.createDefault();
+
+            HttpResponse response = client.execute(post);
+            // System.out.println(response.toString());
+            //{HTTP/1.1 200 OK [Content-Length: 60, Content-Type: application/json; charset=utf-8] ResponseEntityProxy{[Content-Type: application/json; charset=utf-8,Content-Length: 60,Chunked: false]}}
+            //判断接口响应的header中是否有Set-Cookie
+            getAndStoreCookiesFromResHeader(response,cookieFlag);
+
+            // 状态码
+            int statusCode = response.getStatusLine().getStatusCode();
+            // 响应报文
+            result = EntityUtils.toString(response.getEntity());
+            // 从body中取出表示表示已登陆的字段
+            // getAndStoreTokenFromSingleResBody(result,tokenFlag);
+            log.info("响应状态码：" + "[" + statusCode + "]" + ", 响应结果：[" + result + "]");
+
+            // System.out.println(result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
+
+
 
 }
