@@ -14,6 +14,7 @@ public class Case {
     private String apiId;
     private String desc;
     private String params;
+    private String token;
     private String expectedResponseData;
     private String actualResponseData;
 }
