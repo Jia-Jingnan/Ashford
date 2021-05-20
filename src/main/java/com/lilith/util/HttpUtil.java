@@ -162,6 +162,18 @@ public class HttpUtil {
         return result;
     }
 
+    // 支持设置token
+    public static String doService(String type, String url, Map<String,String> params, String tokenParam, String tokenValue){
+        String result = null;
+        if ("post".equalsIgnoreCase(type)){
+            result = HttpUtil.doPostByJson(url,params,tokenParam,tokenValue);
+        } else if ("get".equalsIgnoreCase(type)){
+            result = HttpUtil.doGet(url,params,tokenParam,tokenValue);
+        }
+
+        return result;
+    }
+
     private static void getAndStoreCookiesFromResHeader(HttpResponse response,String flag) {
         // 从header中取出"Set-Cookie"响应头
         Header setCookieHeader = response.getFirstHeader("Set-Cookie");
