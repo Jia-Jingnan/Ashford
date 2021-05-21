@@ -14,7 +14,7 @@ public class ApiUtil {
     public static List<Api> apis = new ArrayList<>();
 
     static {
-        ExcelUtil.load("src/main/resources/cases/cases_v6.xlsx","接口信息",Api.class);
+        ExcelUtil.load(PropertiesUtil.getExcelPath(),"接口信息",Api.class);
     }
 
     /**
