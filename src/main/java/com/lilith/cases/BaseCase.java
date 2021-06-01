@@ -2,11 +2,9 @@ package com.lilith.cases;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lilith.entity.Result;
-import com.lilith.util.ApiUtil;
-import com.lilith.util.AssertUtil;
-import com.lilith.util.ExcelUtil;
-import com.lilith.util.HttpUtil;
+import com.lilith.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.impl.conn.Wire;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -24,7 +22,14 @@ public class BaseCase {
     public String[] cellNames = {"CaseId", "ApiId", "Params", "ExpectedResponseData","PreValidateSql", "AfterValidateSql"};
 
     @Test(dataProvider = "datas")
-    public void test(String caseId, String apiId, String parameter, String expectedResponseData){
+    public void test(String caseId, String apiId, String parameter, String expectedResponseData, String preValidateSql, String afterValidateSql){
+        // 判断SQL验证脚本是否为空，不为空则执行SQL语句
+        if (preValidateSql != null && preValidateSql.trim().length() > 0){
+            // 接口调用前执行SQL校验查询语句
+            String preValidateResult = DBCheckUtil.doQuery(preValidateSql);
+            ExcelUtil.resultList.add(new Result("用例", caseId, "PreValidateResult", preValidateResult));
+
+        }
         // url
         log.info("根据接口编号" + apiId + "获取接口请求地址");
         String url = ApiUtil.getUrlByApiId(apiId);
@@ -48,6 +53,13 @@ public class BaseCase {
         Result result = new Result("用例",caseId, "ActualResponseData",response);
         // 对象保存到resultList中
         ExcelUtil.resultList.add(result);
+
+        if (afterValidateSql != null && afterValidateSql.trim().length() > 0){
+            // 接口调用后执行SQL校验查询语句
+            String afterValidateResult = DBCheckUtil.doQuery(afterValidateSql);
+            // 数据封装成对象，统一写入Excel中
+            ExcelUtil.resultList.add(new Result("用例", caseId, "AfterValidateResult", afterValidateResult));
+        }
 
         // 在测试套件中显示结果是否通过
         Assert.assertEquals(response,"通过");
