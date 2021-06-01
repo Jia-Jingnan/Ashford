@@ -21,6 +21,8 @@ import java.util.Map;
 @Slf4j
 public class BaseCase {
 
+    public String[] cellNames = {"CaseId", "ApiId", "Params", "ExpectedResponseData","PreValidateSql", "AfterValidateSql"};
+
     @Test(dataProvider = "datas")
     public void test(String caseId, String apiId, String parameter, String expectedResponseData){
         // url
