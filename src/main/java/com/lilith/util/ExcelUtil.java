@@ -3,15 +3,10 @@ package com.lilith.util;
 import com.lilith.entity.Api;
 import com.lilith.entity.Case;
 import com.lilith.entity.Result;
-import jdk.internal.util.xml.impl.Input;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
-import sun.text.normalizer.UBiDiProps;
 
 import java.io.*;
 import java.lang.reflect.Method;
-import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,75 +83,6 @@ public class ExcelUtil {
 
     }
 
-    // 读取连续行和列的数据
-    public static Object[][] datas(String excelPath, String sheetName, int startRow, int endRow, int startCell, int endCell){
-
-        // 存储数据的二维数组
-        Object[][] datas = null;
-
-        try {
-            // 获取workbook对象
-            Workbook workbook = WorkbookFactory.create(new File(excelPath));
-            // 获取sheet对象
-            Sheet sheet = workbook.getSheet(sheetName);
-
-            datas = new Object[endRow - startRow + 1][endCell - startCell + 1];
-
-            // 获取行
-            for (int i = startRow; i <= endRow; i++){
-                Row row = sheet.getRow(i);
-                // 获取列
-                // 第六列第七列为数据
-                for (int j = startCell; j <= endCell; j++){
-                    Cell cell = row.getCell(j);
-                    // 将列设置为字符串类型
-                    cell.setCellType(CellType.STRING);
-                    String stringCellValue = cell.getStringCellValue();
-                    datas[i-startRow][j-startCell] = stringCellValue;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return datas;
-    }
-
-    // 读取非连续的行和列的数据
-    public static Object[][] datas(String excelPath, String sheetName, int[] rows, int[] cells){
-
-        // 存储数据的二维数组
-        Object[][] datas = null;
-
-        try {
-            // 获取workbook对象
-            Workbook workbook = WorkbookFactory.create(new File(excelPath));
-            // 获取sheet对象
-            Sheet sheet = workbook.getSheet(sheetName);
-
-            // 定义保存提取出的数据的数组
-            datas = new Object[rows.length][cells.length];
-
-            // 获取行
-            // 通过循环获取每一行
-            for (int i = 0; i < rows.length; i++){
-                Row row = sheet.getRow(rows[i]);
-                // 获取列
-                // 第六列第七列为数据
-                for (int j = 0; j < cells.length; j++){
-                    Cell cell = row.getCell(cells[j]);
-                    // 将列设置为字符串类型
-                    cell.setCellType(CellType.STRING);
-                    String stringCellValue = cell.getStringCellValue();
-                    datas[i][j] = stringCellValue;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return datas;
-    }
 
     /**
      * 加载Excel表中的数据
