@@ -17,4 +17,9 @@ public class Case {
     private String token;
     private String expectedResponseData;
     private String actualResponseData;
+    private String preValidateSql;
+    private String preValidateResult;
+    private String afterValidateSql;
+    private String afterValidateResult;
+
 }
