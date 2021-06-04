@@ -14,7 +14,8 @@ public class ApiUtil {
     public static List<Api> apis = new ArrayList<>();
 
     static {
-        ExcelUtil.load(PropertiesUtil.getExcelPath(),"接口信息",Api.class);
+        List<Api> list = ExcelUtil.load(PropertiesUtil.getExcelPath(), "接口信息", Api.class);
+        apis.addAll(list);
     }
 
     /**
