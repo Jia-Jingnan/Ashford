@@ -1,40 +1,45 @@
 package com.lilith.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.*;
 import java.util.Properties;
 
 /**
  * @Author:JiaJingnan
  * @Date: 16:50 2020/4/13
  */
+@Slf4j
 public class PropertiesUtil {
 
-    public static Properties properties = new Properties();
+    private static Properties props;
+
     static {
-        InputStream inputStream = null;
+        String fileName = "config.properties";
+        props = new Properties();
         try {
-            inputStream = new FileInputStream(new File("src/main/resources/config.properties"));
-            properties.load(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
+            props.load(new InputStreamReader(PropertiesUtil.class.getClassLoader().getResourceAsStream(fileName),"UTF-8"));
+        } catch (IOException e) {
+            log.error("配置文件读取异常",e);
         }
     }
 
-    public static String getExcelPath(){
-        return properties.getProperty("excel.path");
+
+    public static String getProperty(String key){
+        String value = props.getProperty(key.trim());
+        if(StringUtils.isBlank(value)){
+            return null;
+        }
+        return value.trim();
     }
 
-    public static String getToken(){
-        return properties.getProperty("token");
-    }
+    public static String getProperty(String key,String defaultValue){
 
-    public static String getReportName() {
-        return properties.getProperty("reportName");
-    }
-
-    public static String getSheetName(){
-        return properties.getProperty("sheet.name");
+        String value = props.getProperty(key.trim());
+        if(StringUtils.isBlank(value)){
+            value = defaultValue;
+        }
+        return value.trim();
     }
 }
