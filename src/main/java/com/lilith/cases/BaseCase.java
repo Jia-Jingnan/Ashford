@@ -19,17 +19,10 @@ import java.util.Map;
 @Slf4j
 public class BaseCase {
 
-    public String[] cellNames = {"CaseId", "ApiId", "Params", "ExpectedResponseData","PreValidateSql", "AfterValidateSql"};
+    public String[] cellNames = {"CaseId", "ApiId", "Params", "ExpectedResponseData"};
 
     @Test(dataProvider = "datas")
-    public void test(String caseId, String apiId, String parameter, String expectedResponseData, String preValidateSql, String afterValidateSql){
-        // 判断SQL验证脚本是否为空，不为空则执行SQL语句
-        if (preValidateSql != null && preValidateSql.trim().length() > 0){
-            // 接口调用前执行SQL校验查询语句
-            String preValidateResult = DBCheckUtil.doQuery(preValidateSql);
-            ExcelUtil.resultList.add(new Result("用例", caseId, "PreValidateResult", preValidateResult));
-
-        }
+    public void test(String caseId, String apiId, String parameter, String expectedResponseData){
         // url
         log.info("根据接口编号" + apiId + "获取接口请求地址");
         String url = ApiUtil.getUrlByApiId(apiId);
@@ -54,13 +47,6 @@ public class BaseCase {
         // 对象保存到resultList中
         ExcelUtil.resultList.add(result);
 
-        if (afterValidateSql != null && afterValidateSql.trim().length() > 0){
-            // 接口调用后执行SQL校验查询语句
-            String afterValidateResult = DBCheckUtil.doQuery(afterValidateSql);
-            // 数据封装成对象，统一写入Excel中
-            ExcelUtil.resultList.add(new Result("用例", caseId, "AfterValidateResult", afterValidateResult));
-        }
-
         // 在测试套件中显示结果是否通过
         Assert.assertEquals(response,"通过");
     }
@@ -68,7 +54,7 @@ public class BaseCase {
     @AfterSuite
     public void batchWriteDatas(){
         log.info("开始批量写入Excel");
-        ExcelUtil.batchWriteDatas("src/main/resources/cases/cases_v6.xlsx");
+        ExcelUtil.batchWriteDatas("src/main/resources/cases/cases.xlsx");
     }
 
 }
