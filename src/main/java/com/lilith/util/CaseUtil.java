@@ -22,7 +22,7 @@ public class CaseUtil {
     static {
         // 将所有数据解析封装到cases，load方法中已经调用CaseUtil.cases.add()将对象加入列表中
         // 下一步可以直接取出列表中的数据组成datas
-        List<Case> list = ExcelUtil.load(PropertiesUtil.getExcelPath(), PropertiesUtil.getSheetName(), Case.class);
+        List<Case> list = ExcelUtil.load(PropertiesUtil.getProperty("excel.path"), PropertiesUtil.getProperty("case.sheet.name"), Case.class);
         cases.addAll(list);
 
     }

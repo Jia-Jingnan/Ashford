@@ -27,7 +27,7 @@ public class ExcelUtil {
 
     static {
         // caseIdRownumMapping，cellNameCellnumMapping存入数据，供wirteBackData使用
-        loadRownumAndCellnumMapping(PropertiesUtil.getExcelPath(),PropertiesUtil.getSheetName());
+        loadRownumAndCellnumMapping(PropertiesUtil.getProperty("excel.path"),PropertiesUtil.getProperty("case.sheet.name"));
     }
 
     /**
