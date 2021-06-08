@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 
 @Data
-public class TestReport extends Listener implements IReporter {
+public class TestReport extends AshfordListener implements IReporter {
 
     private String path = System.getProperty("user.dir")+ "/test-report" + File.separator + reportdate+"-report.html";
 
