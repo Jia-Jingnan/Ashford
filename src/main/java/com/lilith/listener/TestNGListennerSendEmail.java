@@ -15,13 +15,13 @@ public class TestNGListennerSendEmail extends AshfordListener implements IExecut
 
     public void onExecutionStart() {
 
-        log.info("ChadStone----------所有Case开始执行");
+        log.info("Ashford----------所有Case开始执行");
     }
 
 
     public void onExecutionFinish() {
 
-        log.info("Chadstone----------生成测试报告");
+        log.info("Ashford----------生成测试报告");
 
         // 等待测试报告生成
         try {
