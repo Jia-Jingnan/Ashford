@@ -17,12 +17,12 @@ import java.util.Map;
  * 目前存在的两个大问题：一个Case里面读取两次excel数据源，大量接口测试时会造成大量的磁盘消耗
  * 二：读取的excel行号列号都写在代码中，耦合性非常高
  */
-public class LoginCases extends BaseCase{
+public class SampleCases extends BaseCase{
 
     // 使用poi解析Excel中的数据
     @DataProvider
     public Object[][] datas(){
-        Object[][] datas = CaseUtil.getCaseDatasByApiId("2",cellNames);
+        Object[][] datas = CaseUtil.getCaseDatasByApiId("1",cellNames);
         return datas;
     }
 

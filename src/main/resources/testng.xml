@@ -3,31 +3,15 @@
 <!--测试套件-->
 <suite name="api">
     <listeners>
-        <!--        <listener class-name="org.uncommons.reportng.HTMLReporter"></listener>-->
-        <!--        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"></listener>-->
         <listener class-name="com.lilith.listener.TestReport"></listener>
         <listener class-name="com.lilith.listener.TestNGListennerSendEmail"></listener>
     </listeners>
     <!--测试集/模块-->
-        <test name="register">
+        <test name="sample">
             <!--测试类-->
             <classes>
                 <!--单个测试类定义-->
-                <class name="com.lilith.cases.RegisterCases"></class>
-            </classes>
-        </test>
-        <test name="login">
-            <!--测试类-->
-            <classes>
-                <!--单个测试类定义-->
-                <class name="com.lilith.cases.LoginCases"></class>
-            </classes>
-        </test>
-        <test name="recharge">
-            <!--测试类-->
-            <classes>
-                <!--单个测试类定义-->
-                <class name="com.lilith.cases.RechargeCases"></class>
+                <class name="com.lilith.cases.SampleCases"></class>
             </classes>
         </test>
 </suite> <!-- Suite -->
