@@ -2,6 +2,7 @@ package com.lilith.listener;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lilith.util.PropertiesUtil;
 import lombok.Data;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
@@ -14,10 +15,10 @@ import java.util.regex.Matcher;
 @Data
 public class TestReport extends AshfordListener implements IReporter {
 
-    private String path = System.getProperty("user.dir")+ "/test-report" + File.separator + reportdate+"-report.html";
+    private String path = System.getProperty("user.dir")+ PropertiesUtil.getProperty("report.folder.name") + File.separator + reportdate+PropertiesUtil.getProperty("report.suffix");
 
     // private String templatePath = System.getProperty("user.dir") +File.separator+"template.html";
-    private String templatePath = System.getProperty("user.dir") + "/src/main/resources/template.html";
+    private String templatePath = System.getProperty("user.dir") + PropertiesUtil.getProperty("report.template.path");
 
     private int testsPass = 0;
 
@@ -29,7 +30,7 @@ public class TestReport extends AshfordListener implements IReporter {
 
     private long totalTime;
 
-    private String name = "autoapi接口自动化测试";
+    private String name = PropertiesUtil.getProperty("report.name");
 
     public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
         List<ITestResult> list = new ArrayList<ITestResult>();
